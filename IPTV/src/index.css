@@ -1,0 +1,118 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-gray-900 text-white font-sans transition-colors duration-500;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body.dark {
+  @apply bg-gray-100 text-gray-900;
+}
+
+/* index.css */
+html,
+body,
+#root {
+  height: 100%;
+}
+.player-offset {
+  transform: translateY(-40px);
+} /* if you need extra nudge */
+
+/* Mesh gradient background */
+.mesh-gradient {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(135deg, #0a84ff, #ff9f0a, #8e2de2, #4a00e0);
+  background-size: 400% 400%;
+  animation: meshAnim 20s ease infinite;
+}
+
+@keyframes meshAnim {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* ---------- Frosted glass panel (safe, global) ---------- */
+.frosted-panel {
+  position: relative;
+  overflow: hidden;
+  /* visual style */
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  backdrop-filter: blur(16px) saturate(1.05);
+  -webkit-backdrop-filter: blur(16px) saturate(1.05);
+  border-radius: 14px;
+  box-shadow: 0 8px 30px rgba(4,6,10,0.6);
+  transition: all 0.28s ease;
+}
+
+/* ensure children sit above the highlight */
+.frosted-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Subtle blurred highlight, behind content */
+.frosted-panel::before {
+  content: "";
+  position: absolute;
+  top: -25%;
+  left: -20%;
+  width: 140%;
+  height: 160%;
+  z-index: 0; /* behind children */
+  pointer-events: none;
+  background: radial-gradient(
+    60% 40% at 20% 20%,
+    rgba(255,255,255,0.06),
+    rgba(255,255,255,0.02) 35%,
+    transparent 55%
+  );
+  mix-blend-mode: overlay;
+  filter: blur(28px) saturate(1.05);
+  transform-origin: center;
+  animation: highlightFloat 10s ease-in-out infinite;
+}
+
+/* gentle float to avoid hard rotation / rectangle illusion */
+@keyframes highlightFloat {
+  0%   { transform: translate3d(-2%, 0, 0) rotate(2deg); }
+  50%  { transform: translate3d(2%, 1%, 0) rotate(-1deg); }
+  100% { transform: translate3d(-2%, 0, 0) rotate(2deg); }
+}
+
+
+@keyframes moveHighlight {
+  0% {
+    transform: rotate(0deg) translate(0, 0);
+  }
+  50% {
+    transform: rotate(180deg) translate(10%, 10%);
+  }
+  100% {
+    transform: rotate(360deg) translate(0, 0);
+  }
+}
+
+/* Sidebar styling */
+.sidebar {
+  @apply fixed top-16 left-8 w-64 p-6 space-y-6;
+}
+
+/* Theme customization inputs */
+input[type="color"] {
+  @apply w-full h-10 rounded cursor-pointer border-none;
+}
